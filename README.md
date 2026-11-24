@@ -12,18 +12,6 @@ then measures how stable those models are under controlled linguistic and visual
 Romanisation-augmentation mitigation, explains the decisions before and after each perturbation, and categorises the
 failures. Each dataset is processed separately with the same protocol.
 
-## Paper
-
-| Document | Source |
-|---|---|
-| Conference paper (IEEE, 8-page limit) | [paper/main.tex](paper/main.tex) (sections in `paper/conf/`) |
-| Supplementary material | [paper/supplementary.tex](paper/supplementary.tex) |
-| Extended version (full methodology, appendix tables) | [paper/main_extended.tex](paper/main_extended.tex) (sections in `paper/sections/`) |
-
-Compile from `paper/` with `pdflatex main && bibtex main && pdflatex main && pdflatex main` (likewise for the other
-two; the supplementary needs no `bibtex`), or upload the `paper/` folder to Overleaf. All tables in the paper are
-generated from `results/` by the scripts below. **Results:** see
-[results/RESULTS.md](results/RESULTS.md) (all cross-dataset tables) and the summary [below](#results).
 
 ## Repository layout
 
