@@ -1,0 +1,3 @@
+task,granularity,comparison,fusion,other,diff,ci_lo,ci_hi,p_one_sided,p_holm
+sentiment,fine,fusion_vs_text,F:xlmr-large+clip-l14|gmu,T:xlmr-large|text_logreg,0.0760352891733061,0.05771285542451827,0.09343664955416991,0.000999000999000999,0.000999000999000999
+sentiment,fine,fusion_vs_image,F:xlmr-large+clip-l14|gmu,I:clip-l14|image_mlp,0.01943090187120744,0.008236800769935484,0.03026962869392935,0.001998001998001998,0.001998001998001998

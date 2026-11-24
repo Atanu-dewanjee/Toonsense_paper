@@ -1,0 +1,7 @@
+text_enc,clip-b16,clip-b32,clip-l14,dinov2-base
+banglabert,53.0,52.6,55.3,50.5
+labse,51.7,50.9,54.1,50.8
+mbert,53.0,51.4,54.2,49.5
+me5-base,52.8,51.8,55.0,51.2
+xlmr-base,53.7,53.6,55.5,52.1
+xlmr-large,54.7,53.6,56.2,51.4

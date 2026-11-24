@@ -1,0 +1,6 @@
+task,clean-error,cross-modal-fragile,linguistic-fragile,stable,visual-fragile
+humour,43.6,25.6,11.3,9.8,9.8
+motivational,43.6,23.3,6.0,13.5,13.5
+offensive,29.3,12.8,44.4,11.3,2.3
+sarcasm,42.9,18.8,18.8,15.8,3.8
+sentiment,57.1,21.8,12.0,5.3,3.8

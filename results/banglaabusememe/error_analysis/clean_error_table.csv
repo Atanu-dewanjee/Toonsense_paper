@@ -1,0 +1,5 @@
+task,contextual/cultural,correct,cross-modal,linguistic,ocr-limited,visual
+abuse,8.0,73.4,1.1,7.4,5.2,5.0
+sarcasm,10.2,69.3,1.1,5.7,6.4,7.3
+sentiment,18.2,52.8,0.8,9.7,11.0,7.4
+vulgar,6.9,75.9,0.8,6.4,4.6,5.4

@@ -1,0 +1,13 @@
+,Bangla,Code-mixed,Latin-script
+Transliteration,22.2,18.5,2.9
+Roman. spelling noise,28.2,24.1,10.3
+Bangla spelling noise,6.3,5.1,0.7
+Code-mixing,3.9,3.2,3.0
+Emoji insertion,10.7,10.9,13.9
+Emoji/symbol removal,1.2,1.7,1.6
+Blur,18.1,18.3,21.2
+Crop,8.2,9.5,10.2
+Down-sampling,13.9,13.9,15.7
+JPEG,7.2,7.2,9.8
+Text occlusion,9.7,9.6,10.2
+Region occlusion,9.8,9.8,10.1

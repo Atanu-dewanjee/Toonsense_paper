@@ -1,0 +1,5 @@
+task,clean-error,cross-modal-fragile,linguistic-fragile,stable,visual-fragile
+abuse,26.3,12.0,13.5,39.3,9.0
+sarcasm,30.6,11.4,3.8,38.6,15.6
+sentiment,47.8,18.3,11.8,15.7,6.3
+vulgar,24.0,12.5,15.3,37.2,11.1
