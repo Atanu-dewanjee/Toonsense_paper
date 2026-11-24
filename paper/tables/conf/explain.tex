@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Explainability. IG text share of Concat-MLP on clean inputs and at severity 3. Ratio: Grad-CAM mass on OCR text boxes over their area share ($>1$: over-attention to rendered text). $r$: correlation of clean and perturbed CAMs (severity 2).}
+\label{tab:conf_xai}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lccccccc}
+\toprule
+ & \multicolumn{4}{c}{IG text share} & \multicolumn{3}{c}{Grad-CAM} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-8}
+Dataset & Clean & Translit. & Blur & Text occ. & Ratio & $r$ blur & $r$ JPEG \\
+\midrule
+CMBan & 0.59 & 0.73 & 0.50 & 0.51 & 1.13 & 0.30 & 0.92 \\
+BAM & 0.55 & 0.71 & 0.43 & 0.44 & 0.76 & 0.39 & 0.87 \\
+MemoSen & 0.55 & 0.68 & 0.46 & 0.47 & 0.88 & 0.36 & 0.92 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

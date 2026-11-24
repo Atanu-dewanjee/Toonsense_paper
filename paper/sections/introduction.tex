@@ -1,0 +1,72 @@
+\section{Introduction}
+\label{sec:intro}
+
+Internet memes combine an image with overlaid text, and their meaning usually arises from the interaction of the
+two: a harmless caption can become sarcastic or offensive in front of a particular picture, and vice versa. This
+interaction makes memes hard for systems that analyse text or images in isolation. It has motivated a line of
+multimodal datasets and models for sentiment, humour, offensiveness and hate
+speech~\cite{kiela2020hateful,sharma2020memotion}.
+
+Bangla is spoken by more than 250 million people, and Bangla memes have recently received dedicated
+resources~\cite{hossain2022memosen,hossain2022mute,das2023banglaabusememe,hossain2024bhm}. The most recent,
+CMBan~\cite{cmban2025}, focuses on \emph{cartoon-driven} memes. These are built on recurring cartoon templates and
+written in Bangla, English or a mix of both, and are annotated for humour, sarcasm, offensiveness, motivation and
+sentiment.
+
+All of these works evaluate models on held-out \emph{clean} data. Social-media memes, however, are not clean.
+\begin{itemize}
+  \item The same joke circulates in Bangla script and in Romanised ``Banglish'', with inconsistent spelling,
+  English insertions and added or stripped emojis.
+  \item Images are recompressed, cropped, resized and re-captioned as they are shared.
+\end{itemize}
+A model that scores well on a benchmark may therefore fail on the variants it meets in deployment, for example if
+it depends on surface spellings or on image details rather than on the meme's meaning. To our knowledge, no prior
+work measures how Bangla meme classifiers behave under such variation.
+
+We present \textbf{ToonSense}, a robustness study of multimodal models on Bangla--English cartoon memes. ToonSense
+addresses three questions:
+\begin{enumerate}
+  \item[\textbf{Q1}] How much do text, image and their fusion contribute to clean-data accuracy?
+  \item[\textbf{Q2}] How much does accuracy drop under realistic linguistic and visual perturbations, and which
+  modality and perturbation types are most harmful?
+  \item[\textbf{Q3}] Why do the models fail? Do attribution patterns shift under perturbation, and can errors be
+  traced to the text, the image, their combination or cultural context?
+\end{enumerate}
+
+Our contributions are:
+\begin{itemize}
+  \item \textbf{A robustness framework for Bangla memes.} It covers twelve perturbation families at three
+  severities. The six linguistic families include a colloquial Bangla-to-Banglish transliterator, Romanised and
+  native-script spelling noise, code-mixing and emoji edits. The six visual families include text-region
+  occlusion driven by OCR boxes. Performance loss is measured by the Robustness Drop and the label-free flip rate.
+
+  \item \textbf{A multi-encoder benchmark.} We compare six frozen multilingual text encoders, four image encoders
+  and five fusion heads, using repeated cross-validation, bootstrap confidence intervals and Holm-corrected
+  significance tests. Besides the publicly labelled CMBan subset, we replicate all analyses on two larger Bangla
+  meme datasets, BanglaAbuseMeme~\cite{das2023banglaabusememe} and MemoSen~\cite{hossain2022memosen}.
+
+  \item \textbf{Comparative explainability.} We compare Integrated Gradients modality shares, token attributions
+  and Grad-CAM maps \emph{before and after} perturbation. We introduce a text-attention ratio that measures how
+  much CLIP looks at the rendered caption.
+
+  \item \textbf{An error taxonomy} that attributes clean errors and robustness failures to linguistic, visual,
+  cross-modal, OCR-related and contextual/cultural sources.
+\end{itemize}
+
+Our main findings are as follows.
+\begin{itemize}
+  \item Image encoders carry most of the signal: CLIP beats every frozen text encoder on all three datasets, and a
+  character $n$-gram baseline beats the text encoders on the two larger ones. With a few thousand training memes,
+  fusion adds a small but significant gain.
+  \item Romanised Bangla is the most damaging perturbation on every dataset. It reduces the macro-F1 of the fusion
+  models by 8--21\% relative and changes 26--45\% of their predictions, while native-script spelling noise and
+  code-mixing are nearly harmless.
+  \item Fusion halves this damage on the larger datasets but not on the small CMBan subset. On all datasets, the
+  perturbed text \emph{gains} attribution share rather than being discounted.
+  \item Adding transliterated copies of the training memes removes most of the drop, including for a Romanised
+  spelling style never seen in training, at a cost of under one point of clean macro-F1.
+  \item Visual perturbations flip up to 27\% of predictions with comparatively small F1 changes, so aggregate
+  accuracy understates instability. The largest residual error class is contextual or cultural.
+\end{itemize}
+Code, perturbation generators and evaluation scripts are released to support reproducible robustness evaluation of
+Bangla meme models.

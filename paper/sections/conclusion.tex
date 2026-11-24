@@ -1,0 +1,31 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented ToonSense, a robustness study of multimodal classifiers for Bangla--English memes built on frozen
+multilingual text encoders and CLIP. Across CMBan cartoon memes and two larger Bangla meme datasets, we benchmarked
+six text encoders, four image encoders and five fusion heads, and subjected the primary XLM-R + CLIP-B/32 models to
+twelve linguistic and visual perturbations at three severities.
+
+Four conclusions stand out.
+\begin{enumerate}
+  \item \textbf{Clean accuracy.} The image modality carries most of the signal, and frozen text encoders are
+  outperformed even by character $n$-grams. Fusion adds a small but significant gain once a few thousand training
+  memes are available.
+
+  \item \textbf{Romanisation is the main threat.} Writing the same meme in Romanised Bangla is the most damaging
+  perturbation on every dataset, costing the fusion models 8--21\% of relative macro-F1. Native-script spelling
+  noise and code-mixing are nearly harmless. Fusion halves the damage only when enough training data is
+  available, and the perturbed text attracts \emph{more} attribution rather than less.
+
+  \item \textbf{A simple remedy.} Adding transliterated copies of the training memes, with no new labels, reduces the Romanisation drop of
+  the fusion models from 7--15\% to 2\% for transliteration and from 8--21\% to 3--5\% for an unseen
+  Romanised spelling style, while changing clean macro-F1 by less than one point.
+
+  \item \textbf{Stability is not accuracy.} Visual perturbations flip up to 27\% of predictions with little change
+  in macro-F1. Robustness evaluations should therefore report flip rates. CLIP's attention to rendered text is a
+  property of cartoon memes rather than of memes in general.
+\end{enumerate}
+
+Future work should evaluate fine-tuned and generative vision--language models with the same protocol, collect
+naturally Romanised versions of existing memes, verify the contextual/cultural error candidates with native
+speakers, and repeat the CMBan analyses once its full label set is released.

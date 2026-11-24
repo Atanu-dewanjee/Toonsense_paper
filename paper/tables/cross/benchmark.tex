@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Clean-data benchmark across datasets: task-averaged macro-F1 (\%) at each dataset's primary label granularity. Parentheses give the selected encoder(s) and head. Rank: position of the best primary-pair head among all fusion configurations.}
+\label{tab:cross_bench}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccccccc}
+\toprule
+Dataset & Tasks & Majority & Char TF-IDF & Best text & Best image & XLM-R+CLIP-B/32 & Best fusion & Rank \\
+\midrule
+CMBan & 5 & 35.0 & 46.2 & 46.9 (mE5 LR) & 51.0 (CLIP-L/14 LR) & 48.4 (Concat-LR) & 50.1 (LaBSE+CLIP-L/14 Concat-MLP) & 21/51 \\
+BanglaAbuseMeme & 4 & 34.8 & 65.2 & 60.5 (XLM-R-L MLP) & 66.0 (CLIP-L/14 MLP) & 65.7 (Late) & 67.6 (mE5+CLIP-L/14 Concat-MLP) & 22/51 \\
+MemoSen & 1 & 25.6 & 52.6 & 48.4 (XLM-R-L LR) & 54.4 (CLIP-L/14 MLP) & 53.6 (Concat-LR) & 56.2 (XLM-R-L+CLIP-L/14 GMU) & 16/51 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

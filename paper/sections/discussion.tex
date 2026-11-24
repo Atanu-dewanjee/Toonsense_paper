@@ -1,0 +1,74 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Revisiting the Expected Findings}
+Our project proposal stated six expectations. We revisit them in the light of the results.
+
+\begin{enumerate}
+  \item \textbf{Multimodal models outperform unimodal ones on at least some tasks.} \emph{Supported on the larger
+  datasets.} Fusion significantly beats the best text model on all five BAM and MemoSen tasks and the best image
+  model on two of them. On the 133 labelled CMBan memes the evidence is inconclusive. The gain over the image model
+  is small (1.5--2 points), because CLIP already captures much of what the text adds.
+
+  \item \textbf{Humour and sarcasm remain hard.} \emph{Partly supported.} Sentiment, not humour or sarcasm, is the
+  hardest task on every dataset. However, CMBan Humour and Sarcasm have the largest share of contextual/cultural
+  errors after Sentiment (about 20\%), and BAM Sarcasm is the task where fusion gains least over the image model
+  (+0.2 points).
+
+  \item \textbf{Different perturbations affect different models and tasks differently.} \emph{Supported.}
+  Linguistic perturbations hurt text and fusion heads, visual ones hurt image and fusion heads, and the effects
+  differ by task. Romanisation costs CMBan Offensive 13--18 F1 points and BAM Vulgarity 10--13 points, but leaves
+  Sarcasm almost unchanged on both datasets. Tasks signalled by specific words (swear words, slurs) are the most
+  vulnerable to a change of script. Sarcasm depends more on the incongruity between image and text, and is the least
+  vulnerable.
+
+  \item \textbf{Linguistic perturbations hurt text-heavy memes more; visual corruption hurts where the image is the
+  evidence.} \emph{Supported.} Romanisation hurts Bangla-script memes most, whose entire text is rewritten. Visual
+  corruptions matter most on the datasets where the image model is strongest (BAM, MemoSen).
+
+  \item \textbf{Explainability reveals modality-specific failure modes.} \emph{Supported, with a surprise.} IG shows
+  that Romanised text attracts \emph{more} attribution rather than less. Grad-CAM shows over-attention to rendered
+  captions on cartoon memes, but not on photographic memes.
+
+  \item \textbf{The most vulnerable perturbations and dimensions can be identified.} \emph{Supported.} Romanisation
+  is the dominant threat on every dataset, followed by blur and down-sampling on the larger datasets. Lexically signalled
+  dimensions (offensiveness, vulgarity) and sentiment are the most affected.
+\end{enumerate}
+
+\subsection{Why Romanisation Breaks Fusion Models}
+Three observations combine into a consistent explanation.
+\begin{enumerate}
+  \item XLM-R's representation of Romanised Bangla is far from that of Bangla script. Native-script spelling noise
+  of similar strength is harmless.
+  \item The fusion head has never seen such inputs during training. It treats the out-of-distribution text vector
+  as strong evidence, which is reflected in the increased IG text share.
+  \item With little training data (CMBan), the head has not learned to rely on the image, so the error propagates
+  fully. With more data, the image branch absorbs about half of the damage.
+\end{enumerate}
+The augmentation experiment (Section~\ref{sec:results:aug}) confirms this account. Showing the head transliterated
+copies of its training memes removes most of the drop, including for an unseen Romanisation style. The weakness
+therefore lies in the training distribution of the head, not in an inability of the encoder to represent Banglish.
+
+\subsection{Practical Recommendations}
+\begin{itemize}
+  \item \textbf{Augment with Romanised text.} Transliteration augmentation is cheap, needs no extra labels, and
+  removes most of the dominant failure mode at a cost of under one F1 point on clean data.
+  \item \textbf{Report flip rates.} Visual perturbations change up to 27\% of predictions with only a few points of
+  F1 loss. Aggregate accuracy alone overstates stability.
+  \item \textbf{Do not discard character features.} Character $n$-gram models beat frozen sentence encoders on
+  meme text. Combining both, or fine-tuning the text encoder, is a promising direction.
+  \item \textbf{Prefer a stronger image encoder when affordable.} CLIP ViT-L/14 gives the largest single accuracy
+  gain (2.7--2.8 points). The image branch is also what cushions text corruption.
+\end{itemize}
+
+\subsection{CMBan in Context}
+CMBan's cartoon memes differ from the photographic memes of BAM and MemoSen in three ways:
+\begin{itemize}
+  \item Their text is longer (24.8 vs.\ about 15 words).
+  \item CLIP attends more to their captions.
+  \item Their errors are more often contextual or cultural (18\% vs.\ 10--11\%).
+\end{itemize}
+These differences support CMBan's motivation as a distinct resource: cartoon memes rely heavily on the written
+dialogue and on shared cultural knowledge of recurring templates. They also mean that conclusions drawn on
+photographic Bangla memes do not automatically transfer to cartoon memes. The full CMBan label release would allow
+these differences to be tested with adequate statistical power.

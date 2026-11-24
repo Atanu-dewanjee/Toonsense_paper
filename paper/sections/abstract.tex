@@ -1,0 +1,15 @@
+\begin{abstract}
+Multimodal meme classifiers are evaluated on clean benchmarks, yet memes circulate in Romanised spellings, with
+mixed languages and degraded images. We present ToonSense, a robustness study of frozen-encoder multimodal models
+for Bangla--English memes, centred on cartoon memes from CMBan and replicated on BanglaAbuseMeme and MemoSen. We
+benchmark six multilingual text encoders, four image encoders and five fusion heads with repeated cross-validation
+and Holm-corrected significance tests. We then subject the primary XLM-R + CLIP ViT-B/32 models to twelve
+linguistic and visual perturbations at three severities, analyse attributions before and after perturbation with
+Integrated Gradients and Grad-CAM, and categorise errors as linguistic, visual, cross-modal or cultural. Image
+features carry most of the signal, and fusion adds a small but significant gain on the larger datasets. Romanised
+Bangla is the most damaging perturbation on every dataset, reducing fusion macro-F1 by 8--21\% relative, whereas
+native-script spelling noise and code-mixing are nearly harmless. The perturbed text gains rather than loses
+attribution share, and visual perturbations flip up to 27\% of predictions with comparatively small F1 changes.
+Training-time augmentation with transliterated copies cuts the Romanisation drop to 2--5\%, including for an unseen
+spelling style, at a clean-accuracy cost below one point.
+\end{abstract}

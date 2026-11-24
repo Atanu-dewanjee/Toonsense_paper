@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Best fusion vs.\ best unimodal model per task: mean macro-F1 difference (points), tasks where fusion is better, and tasks significant after Holm correction (paired bootstrap, $\alpha=0.05$).}
+\label{tab:cross_sig}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lcccccc}
+\toprule
+Dataset & $\Delta$ vs text & Wins vs text & Sig. vs text & $\Delta$ vs image & Wins vs image & Sig. vs image \\
+\midrule
+CMBan & +0.7 & 2/5 & 0/5 & -0.3 & 2/5 & 0/5 \\
+BanglaAbuseMeme & +6.9 & 4/4 & 4/4 & +1.5 & 4/4 & 1/4 \\
+MemoSen & +7.6 & 1/1 & 1/1 & +1.9 & 1/1 & 1/1 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

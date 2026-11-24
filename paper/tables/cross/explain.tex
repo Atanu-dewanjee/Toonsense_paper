@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Explainability across datasets. Columns 2--8: text share of the Integrated-Gradients attribution of Concat-MLP on clean inputs and at severity 3. CAM ratio: Grad-CAM mass on OCR text boxes divided by their area share ($>1$: over-attention to rendered text). $r$: Pearson correlation of clean vs.\ perturbed CAMs (severity 2).}
+\label{tab:cross_xai}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccccccccc}
+\toprule
+Dataset & Clean & Translit. & Roman. noise & Emoji ins. & Blur & Down-samp. & Text occ. & CAM ratio & $r$ blur & $r$ JPEG \\
+\midrule
+CMBan & 0.59 & 0.73 & 0.72 & 0.62 & 0.50 & 0.51 & 0.51 & 1.13 & 0.30 & 0.92 \\
+BanglaAbuseMeme & 0.55 & 0.71 & 0.70 & 0.59 & 0.43 & 0.44 & 0.44 & 0.76 & 0.39 & 0.87 \\
+MemoSen & 0.55 & 0.68 & 0.67 & 0.59 & 0.46 & 0.46 & 0.47 & 0.88 & 0.36 & 0.92 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

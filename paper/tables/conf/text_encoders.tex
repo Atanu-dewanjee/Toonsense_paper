@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Frozen text encoders: task-averaged accuracy and macro-F1 (\%) with the better head per encoder ($^{L}$: LR, $^{M}$: MLP). Bold: best text encoder. Both heads are listed in the supplementary material.}
+\label{tab:conf_text}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lcccccc}
+\toprule
+Encoder & \multicolumn{2}{c}{CMBan} & \multicolumn{2}{c}{BAM} & \multicolumn{2}{c}{MemoSen} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+ & Acc. & F1 & Acc. & F1 & Acc. & F1 \\
+\midrule
+XLM-R base & 50.0 & 45.9$^{L}$ & 61.5 & 59.6$^{M}$ & 57.3 & 46.0$^{L}$ \\
+XLM-R large & 47.7 & 46.0$^{M}$ & 62.5 & \textbf{60.5}$^{M}$ & 60.5 & \textbf{48.4}$^{L}$ \\
+mBERT & 46.0 & 44.8$^{M}$ & 59.0 & 57.2$^{M}$ & 51.7 & 41.2$^{L}$ \\
+BanglaBERT & 50.7 & 46.7$^{L}$ & 60.8 & 58.5$^{L}$ & 53.4 & 42.8$^{L}$ \\
+LaBSE & 46.1 & 44.7$^{M}$ & 60.2 & 58.7$^{M}$ & 54.2 & 43.3$^{L}$ \\
+mE5 base & 51.9 & \textbf{46.9}$^{L}$ & 61.9 & 60.2$^{M}$ & 56.4 & 44.9$^{L}$ \\
+\midrule
+Majority class & 59.4 & 35.0 & 60.7 & 34.8 & 62.5 & 25.6 \\
+Char TF-IDF & 53.7 & 46.2 & 68.2 & 65.2 & 67.6 & 52.6 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

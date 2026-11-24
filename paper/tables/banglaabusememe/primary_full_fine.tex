@@ -1,0 +1,50 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{BanglaAbuseMeme: Accuracy, macro precision/recall/F1 of the primary XLM-R + CLIP configuration (fine).}
+\label{tab:primary_fine_banglaabusememe}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccccc}
+\toprule
+Task & Model & Acc & P & R & Macro-F1 & 95\% CI \\
+\midrule
+Sentiment & xlmr-base / Text LR & 47.8\,$\pm$\,0.5 & 44.4\,$\pm$\,0.7 & 45.9\,$\pm$\,0.8 & 44.4\,$\pm$\,0.7 & [44.3, 47.5] \\
+Sentiment & xlmr-base / Text MLP & 48.0\,$\pm$\,0.6 & 45.9\,$\pm$\,0.6 & 47.8\,$\pm$\,1.0 & 45.2\,$\pm$\,0.7 & [44.3, 47.4] \\
+Sentiment & clip-b32 / Image LR & 47.5\,$\pm$\,0.5 & 44.2\,$\pm$\,0.5 & 45.2\,$\pm$\,0.5 & 43.8\,$\pm$\,0.5 & [42.8, 46.0] \\
+Sentiment & clip-b32 / Image MLP & 47.8\,$\pm$\,1.2 & 45.4\,$\pm$\,0.9 & 46.9\,$\pm$\,0.8 & 44.7\,$\pm$\,1.0 & [44.0, 47.3] \\
+Sentiment & xlmr-base + clip-b32 / Concat LR & 51.5\,$\pm$\,0.1 & 46.9\,$\pm$\,0.1 & 48.1\,$\pm$\,0.3 & 47.1\,$\pm$\,0.2 & [46.2, 49.4] \\
+Sentiment & xlmr-base + clip-b32 / Concat MLP & 51.5\,$\pm$\,0.6 & 49.0\,$\pm$\,0.5 & 51.4\,$\pm$\,0.4 & 48.6\,$\pm$\,0.6 & [48.2, 51.5] \\
+Sentiment & xlmr-base + clip-b32 / Late fusion & 52.1\,$\pm$\,0.7 & 49.3\,$\pm$\,0.6 & 51.5\,$\pm$\,0.7 & 49.0\,$\pm$\,0.6 & [47.7, 51.0] \\
+Sentiment & xlmr-base + clip-b32 / GMU & 51.4\,$\pm$\,0.8 & 49.1\,$\pm$\,0.5 & 51.5\,$\pm$\,0.3 & 48.6\,$\pm$\,0.6 & [47.5, 50.9] \\
+Sentiment & xlmr-base + clip-b32 / Bilinear & 50.8\,$\pm$\,1.6 & 47.9\,$\pm$\,0.9 & 49.9\,$\pm$\,0.8 & 47.7\,$\pm$\,1.2 & [47.3, 50.7] \\
+Sarcasm & xlmr-base / Text LR & 61.0\,$\pm$\,0.0 & 60.4\,$\pm$\,0.0 & 60.7\,$\pm$\,0.0 & 60.4\,$\pm$\,0.0 & [59.4, 62.5] \\
+Sarcasm & xlmr-base / Text MLP & 62.6\,$\pm$\,0.5 & 62.1\,$\pm$\,0.5 & 62.4\,$\pm$\,0.5 & 62.1\,$\pm$\,0.5 & [61.1, 64.0] \\
+Sarcasm & clip-b32 / Image LR & 67.4\,$\pm$\,0.5 & 66.8\,$\pm$\,0.6 & 67.3\,$\pm$\,0.6 & 66.9\,$\pm$\,0.6 & [66.6, 69.3] \\
+Sarcasm & clip-b32 / Image MLP & 68.4\,$\pm$\,0.4 & 68.0\,$\pm$\,0.4 & 68.5\,$\pm$\,0.4 & 68.0\,$\pm$\,0.4 & [67.4, 70.0] \\
+Sarcasm & xlmr-base + clip-b32 / Concat LR & 67.2\,$\pm$\,0.5 & 66.6\,$\pm$\,0.6 & 66.9\,$\pm$\,0.7 & 66.6\,$\pm$\,0.6 & [66.1, 68.9] \\
+Sarcasm & xlmr-base + clip-b32 / Concat MLP & 68.4\,$\pm$\,0.2 & 68.1\,$\pm$\,0.2 & 68.7\,$\pm$\,0.2 & 68.1\,$\pm$\,0.2 & [67.5, 70.1] \\
+Sarcasm & xlmr-base + clip-b32 / Late fusion & 69.1\,$\pm$\,0.3 & 68.7\,$\pm$\,0.3 & 69.2\,$\pm$\,0.3 & 68.7\,$\pm$\,0.3 & [68.3, 71.1] \\
+Sarcasm & xlmr-base + clip-b32 / GMU & 69.0\,$\pm$\,0.3 & 68.8\,$\pm$\,0.4 & 69.4\,$\pm$\,0.4 & 68.7\,$\pm$\,0.3 & [67.7, 70.5] \\
+Sarcasm & xlmr-base + clip-b32 / Bilinear & 68.3\,$\pm$\,0.2 & 68.4\,$\pm$\,0.1 & 69.0\,$\pm$\,0.1 & 68.1\,$\pm$\,0.2 & [67.6, 70.4] \\
+Abuse & xlmr-base / Text LR & 67.3\,$\pm$\,0.5 & 65.8\,$\pm$\,0.5 & 66.5\,$\pm$\,0.5 & 65.9\,$\pm$\,0.5 & [65.2, 68.1] \\
+Abuse & xlmr-base / Text MLP & 66.9\,$\pm$\,0.6 & 66.3\,$\pm$\,0.4 & 67.3\,$\pm$\,0.3 & 66.1\,$\pm$\,0.5 & [65.1, 68.2] \\
+Abuse & clip-b32 / Image LR & 70.4\,$\pm$\,0.4 & 69.0\,$\pm$\,0.4 & 69.9\,$\pm$\,0.4 & 69.2\,$\pm$\,0.4 & [68.5, 71.3] \\
+Abuse & clip-b32 / Image MLP & 71.5\,$\pm$\,0.1 & 70.1\,$\pm$\,0.1 & 70.9\,$\pm$\,0.2 & 70.3\,$\pm$\,0.2 & [69.3, 72.3] \\
+Abuse & xlmr-base + clip-b32 / Concat LR & 72.4\,$\pm$\,0.4 & 70.8\,$\pm$\,0.4 & 71.4\,$\pm$\,0.4 & 71.0\,$\pm$\,0.4 & [70.8, 73.6] \\
+Abuse & xlmr-base + clip-b32 / Concat MLP & 73.3\,$\pm$\,0.7 & 72.0\,$\pm$\,0.7 & 73.0\,$\pm$\,0.7 & 72.2\,$\pm$\,0.7 & [71.5, 74.4] \\
+Abuse & xlmr-base + clip-b32 / Late fusion & 73.2\,$\pm$\,0.3 & 72.1\,$\pm$\,0.2 & 73.3\,$\pm$\,0.2 & 72.3\,$\pm$\,0.2 & [71.5, 74.3] \\
+Abuse & xlmr-base + clip-b32 / GMU & 73.2\,$\pm$\,0.3 & 72.0\,$\pm$\,0.4 & 73.1\,$\pm$\,0.5 & 72.3\,$\pm$\,0.4 & [71.0, 73.9] \\
+Abuse & xlmr-base + clip-b32 / Bilinear & 72.9\,$\pm$\,0.8 & 71.6\,$\pm$\,0.7 & 72.7\,$\pm$\,0.8 & 71.9\,$\pm$\,0.8 & [71.1, 74.0] \\
+Vulgarity & xlmr-base / Text LR & 68.4\,$\pm$\,0.5 & 64.2\,$\pm$\,0.4 & 66.3\,$\pm$\,0.4 & 64.6\,$\pm$\,0.5 & [64.1, 67.2] \\
+Vulgarity & xlmr-base / Text MLP & 68.4\,$\pm$\,0.6 & 64.6\,$\pm$\,0.1 & 66.9\,$\pm$\,0.2 & 64.9\,$\pm$\,0.2 & [64.1, 67.5] \\
+Vulgarity & clip-b32 / Image LR & 73.3\,$\pm$\,0.6 & 68.8\,$\pm$\,0.5 & 70.9\,$\pm$\,0.5 & 69.4\,$\pm$\,0.6 & [69.0, 71.9] \\
+Vulgarity & clip-b32 / Image MLP & 74.2\,$\pm$\,0.3 & 69.7\,$\pm$\,0.3 & 71.7\,$\pm$\,0.3 & 70.3\,$\pm$\,0.3 & [69.0, 72.0] \\
+Vulgarity & xlmr-base + clip-b32 / Concat LR & 74.9\,$\pm$\,0.8 & 70.2\,$\pm$\,0.8 & 71.9\,$\pm$\,0.8 & 70.8\,$\pm$\,0.8 & [69.8, 73.0] \\
+Vulgarity & xlmr-base + clip-b32 / Concat MLP & 75.5\,$\pm$\,0.4 & 71.4\,$\pm$\,0.4 & 74.2\,$\pm$\,0.5 & 72.2\,$\pm$\,0.4 & [71.1, 74.0] \\
+Vulgarity & xlmr-base + clip-b32 / Late fusion & 76.3\,$\pm$\,0.2 & 71.9\,$\pm$\,0.2 & 74.1\,$\pm$\,0.3 & 72.7\,$\pm$\,0.3 & [71.9, 74.9] \\
+Vulgarity & xlmr-base + clip-b32 / GMU & 75.3\,$\pm$\,0.6 & 71.4\,$\pm$\,0.6 & 74.4\,$\pm$\,0.7 & 72.2\,$\pm$\,0.7 & [71.3, 74.2] \\
+Vulgarity & xlmr-base + clip-b32 / Bilinear & 75.3\,$\pm$\,0.2 & 71.1\,$\pm$\,0.2 & 73.8\,$\pm$\,0.4 & 71.9\,$\pm$\,0.2 & [71.4, 74.2] \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

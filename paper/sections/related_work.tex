@@ -1,0 +1,48 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Multimodal meme understanding.}
+Memes convey meaning through the interplay of an image and overlaid text. The Hateful Memes
+challenge~\cite{kiela2020hateful} showed that unimodal models fail when either modality alone is benign. Memotion
+(SemEval-2020 Task~8)~\cite{sharma2020memotion} introduced the humour, sarcasm, offensiveness, motivation and
+overall-sentiment taxonomy that CMBan adopts. Most systems pair a pretrained text encoder with a pretrained vision
+encoder, often CLIP~\cite{radford2021clip}, and fuse the two representations.
+
+\paragraph{Bangla meme resources.}
+Bangla memes have recently received dedicated datasets.
+\begin{itemize}
+  \item MemoSen~\cite{hossain2022memosen} annotates 4{,}417 memes for three-way sentiment and reports that
+  multimodal models outperform unimodal ones.
+  \item MUTE~\cite{hossain2022mute} targets hateful memes in Bangla and code-mixed text.
+  \item BHM~\cite{hossain2024bhm} adds target identification for hateful memes.
+  \item BanglaAbuseMeme~\cite{das2023banglaabusememe} annotates 4{,}043 memes for abuse, vulgarity, sarcasm,
+  sentiment and target.
+  \item MIMOSA~\cite{ahsan2024mimosa} annotates aggression targets.
+  \item CMBan~\cite{cmban2025} is the first resource built around \emph{cartoon} memes. It annotates 2{,}641
+  Bangla and code-mixed memes along the five Memotion dimensions and identifies more than 800 recurring cartoon
+  templates.
+\end{itemize}
+All of these works evaluate models on held-out \emph{clean} data. None asks whether the predictions survive the
+spelling, script and image variations that memes undergo as they spread.
+
+\paragraph{Robustness evaluation.}
+Controlled corruption benchmarks such as ImageNet-C~\cite{hendrycks2019benchmarking} established severity-graded
+perturbations as a standard way to measure visual robustness. In NLP, behavioural testing (CheckList;
+\cite{ribeiro2020checklist}) probes models with targeted input transformations. Code-switching benchmarks such as
+GLUECoS~\cite{khanuja2020gluecos} show that multilingual encoders degrade on mixed-language input. For Bangla, the
+dominant real-world variation is \emph{Romanised} (``Banglish'') writing, with highly inconsistent spelling. CLIP is
+known to read text rendered in images, which makes it vulnerable to typographic manipulation~\cite{goh2021multimodal}.
+That property is directly relevant to memes, where the text \emph{is} part of the image.
+
+\paragraph{Explainability for multimodal models.}
+Gradient-based attribution methods such as Integrated Gradients~\cite{sundararajan2017ig} and
+Grad-CAM~\cite{selvaraju2017gradcam,chattopadhay2018gradcampp} are widely used to inspect which tokens and image
+regions drive a decision. Prior Bangla meme work has used explanations mainly to justify predictions. We instead use
+attribution \emph{comparatively}: we measure how modality reliance and visual attention shift between the clean and
+perturbed versions of the same meme.
+
+\paragraph{Positioning.}
+ToonSense is, to our knowledge, the first study of the \emph{robustness} of multimodal models on Bangla cartoon
+memes. It combines a multi-encoder benchmark, Bangla-specific linguistic perturbations (colloquial transliteration,
+Romanised spelling variation, code-mixing) with visual corruptions, before/after attribution analysis, and a source
+attribution of errors.

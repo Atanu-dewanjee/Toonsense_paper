@@ -1,0 +1,34 @@
+\section{Introduction}
+\label{sec:intro}
+
+Internet memes combine an image with overlaid text, and their meaning usually arises from the interaction of the two:
+a harmless caption becomes sarcastic or offensive in front of a particular picture. This has motivated multimodal
+datasets and models for meme sentiment, humour, offensiveness and hate~\cite{kiela2020hateful,sharma2020memotion}.
+Bangla, spoken by more than 250 million people, now has dedicated meme
+resources~\cite{hossain2022memosen,hossain2022mute,das2023banglaabusememe,hossain2024bhm}. The most recent,
+CMBan~\cite{cmban2025}, targets \emph{cartoon-driven} memes written in Bangla, English or a mix of both.
+
+All of these works evaluate on held-out \emph{clean} data. Memes on social media are not clean. The same joke
+circulates in Bangla script and in Romanised ``Banglish'' with inconsistent spelling, English insertions and added or
+stripped emojis, and the image is recompressed, cropped and resized as it is shared. A model that scores well on a
+benchmark may fail on these variants. To our knowledge, no prior work measures how Bangla meme classifiers behave
+under such variation.
+
+We present \textbf{ToonSense}, a robustness study of frozen-encoder multimodal classifiers on Bangla--English memes.
+It asks (Q1) how much text, image and fusion contribute to clean accuracy, (Q2) how much accuracy drops under
+realistic linguistic and visual perturbations, and (Q3) why the models fail. Our contributions are:
+\begin{itemize}
+  \item \textbf{A robustness framework for Bangla memes} with twelve perturbation families at three severities,
+  including a colloquial Bangla-to-Banglish transliterator and OCR-guided text occlusion, evaluated by the Robustness
+  Drop and the label-free flip rate.
+  \item \textbf{A multi-encoder benchmark} of six frozen text encoders, four image encoders and five fusion heads
+  with repeated cross-validation and Holm-corrected tests, on the public CMBan subset and replicated on
+  BanglaAbuseMeme~\cite{das2023banglaabusememe} and MemoSen~\cite{hossain2022memosen}.
+  \item \textbf{Comparative explainability and an error taxonomy}: attribution shifts before and after perturbation
+  (Integrated Gradients, Grad-CAM) and a source attribution of errors.
+  \item \textbf{A mitigation}: train-time Romanisation augmentation that needs no new labels.
+\end{itemize}
+The main findings are that image features carry most of the signal; that Romanised Bangla is the most damaging
+perturbation on every dataset (8--21\% relative macro-F1 loss for fusion) while native-script spelling noise is
+nearly harmless; that the perturbed text \emph{gains} attribution share; and that transliteration augmentation removes
+most of the drop at a clean cost below one point.

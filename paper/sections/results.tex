@@ -1,0 +1,241 @@
+\section{Results}
+\label{sec:results}
+
+We report clean-data accuracy first (Section~\ref{sec:results:benchmark}), then robustness
+(Section~\ref{sec:results:rob}), a mitigation experiment (Section~\ref{sec:results:aug}), explainability
+(Section~\ref{sec:results:xai}) and the error taxonomy (Section~\ref{sec:results:errors}). Unless stated otherwise,
+numbers are macro-F1 (\%) averaged over tasks. CMBan uses its coarse labels; BanglaAbuseMeme (BAM) and MemoSen use
+their released labels. Per-dataset detail tables are in Appendix~\ref{app:tables}.
+
+% =====================================================================================
+\subsection{Clean-Data Benchmark}
+\label{sec:results:benchmark}
+
+\input{tables/cross/benchmark.tex}
+
+Table~\ref{tab:cross_bench} summarises the benchmark. Per-task scores are given in
+Tables~\ref{tab:bench_coarse_cmban}, \ref{tab:bench_fine_banglaabusememe} and~\ref{tab:bench_fine_memosen}.
+
+\paragraph{Image encoders are stronger than text encoders.} On all three datasets the best image model (always CLIP
+ViT-L/14) outperforms the best text model, by 4.1 (CMBan), 5.5 (BAM) and 6.0 (MemoSen) points. CLIP-B/32 alone
+already beats every text encoder on every dataset. Two factors contribute:
+\begin{itemize}
+  \item Cartoon and meme templates recur across memes, and CLIP recognises them.
+  \item CLIP reads rendered text to some extent~\cite{goh2021multimodal}, so the image embedding already carries part
+  of the textual signal (Section~\ref{sec:results:xai}).
+\end{itemize}
+The gap persists on MemoSen, whose text comes from human-written captions rather than OCR. It therefore reflects
+the text encoders and not only OCR noise.
+
+\paragraph{Frozen text encoders lose to character $n$-grams.} The character TF-IDF baseline is within 0.7 points
+of the best text encoder on CMBan and \emph{beats} all six frozen text encoders on BAM (65.2 vs.\ $\leq$60.5) and
+MemoSen (52.6 vs.\ $\leq$48.4). Meme text is short, colloquial and often misspelt. Character $n$-grams capture
+these surface cues directly, whereas frozen sentence encoders map them into a general-purpose space that a linear or
+shallow head cannot fully exploit. Table~\ref{tab:text_encoders} lists every text encoder with both heads. XLM-R large
+is the best text encoder on BAM (60.5) and MemoSen (48.4), and mE5 on CMBan (46.9). On the two larger datasets the
+multilingual models (XLM-R, mE5) are ahead of the Bangla-only BanglaBERT and of mBERT, which is the weakest encoder
+everywhere; on CMBan the text encoders lie within 2.2 points of each other. Accuracy gives a misleading picture on
+these imbalanced label sets: the majority-class predictor reaches 59--63\% accuracy at 26--35 macro-F1, and on CMBan
+and MemoSen it is more accurate than every text encoder. We therefore rank all models by macro-F1.
+
+\input{tables/cross/text_encoders.tex}
+
+\paragraph{Fusion helps when enough data is available.} Table~\ref{tab:cross_sig} compares, per task, the best
+fusion model with the best unimodal model of each modality.
+\begin{itemize}
+  \item On BAM, fusion beats the best text model on all four tasks (+6.9 points on average) and the best image model
+  on all four (+1.5 points). The gain over text is significant on every task after Holm correction, and the gain
+  over image on one.
+  \item On MemoSen, fusion is significantly better than both the best text model (+7.6) and the best image model
+  (+1.9).
+  \item On CMBan, no difference is significant. With 133 memes, the confidence intervals are about $\pm$8 points
+  wide (Table~\ref{tab:primary_coarse_cmban}), far wider than the effects found on the larger datasets.
+\end{itemize}
+On the larger datasets, fusion thus adds a consistent 1.5--2 points over the image model, even though the text
+modality is much weaker on its own.
+
+\input{tables/cross/significance.tex}
+
+\paragraph{The primary pair.} XLM-R + CLIP-B/32 ranks 21st, 22nd and 16th of 51 fusion configurations on the three
+datasets, 1.7--2.6 points behind the best. As discussed in Section~\ref{sec:method:why}, the gap is almost entirely
+due to the image encoder. The best primary head depends on the amount of data. On CMBan, the linear Concat-LR is
+best and the higher-capacity heads overfit (45.3--47.3). On BAM and MemoSen, all five heads lie within 1.8 points
+of each other, and no head is consistently best. Sentiment is the hardest task on every dataset.
+
+% =====================================================================================
+\subsection{Robustness to Perturbations}
+\label{sec:results:rob}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/cross_robustness.pdf}
+  \caption{Relative Robustness Drop of the XLM-R + CLIP-B/32 fusion heads (mean over five heads, all tasks and three
+  severities) for each perturbation family and dataset.}
+  \label{fig:cross_rob}
+\end{figure*}
+
+\input{tables/cross/robustness.tex}
+
+Figure~\ref{fig:cross_rob} and Table~\ref{tab:cross_rob} summarise the Robustness Drop.
+Figure~\ref{fig:sev_cmban} shows the CMBan severity curves.
+
+\paragraph{Romanisation is the most damaging perturbation.} On every dataset, Romanised spelling noise is the
+single most harmful perturbation for the fusion models. It costs 20.7\% (CMBan), 11.5\% (BAM) and 7.7\% (MemoSen) of
+relative macro-F1 and changes 26--45\% of predictions. Transliteration without added noise costs 6.7--14.5\%. For the text-only heads, Romanised spelling noise costs
+more still, at 17.9--26.5\%. By contrast, spelling noise in native Bangla script costs at most
+1.7\%, and code-mixing at most 3\%. The damage is therefore caused by the \emph{change of script}, not by spelling
+variation as such. A Romanised meme is tokenised by XLM-R into a different, and for Banglish poorly trained, part
+of its vocabulary, so its embedding moves far from the Bangla-script training distribution.
+
+\paragraph{Fusion mitigates text fragility only with enough data.} With sufficient training data, fusion halves the
+damage of Romanisation relative to the text-only heads (BAM: 11.5 vs.\ 26.5\%; MemoSen: 7.7 vs.\ 21.8\%), because the
+image branch keeps part of the decision intact. On CMBan the opposite happens. The fusion heads lose \emph{more}
+than the text-only heads (20.7 vs.\ 17.9\%), and the Concat-MLP curve tracks the Text-MLP curve almost exactly
+(Figure~\ref{fig:sev_cmban}). With 133 training memes, the fusion heads cannot learn to discount an unreliable
+text input. Section~\ref{sec:results:xai} shows that, on all datasets, the perturbed text \emph{gains}
+attribution share instead of losing it.
+
+\paragraph{Visual robustness depends on how much the model uses the image.} Visual perturbations are almost harmless
+on CMBan (at most 2.6\%), but on the larger datasets blur and down-sampling cost the image-only heads 8--17\% and
+the fusion heads 3--7\%. On MemoSen, blur (7.4\%) is nearly as harmful as Romanisation (7.7\%). The difference
+mirrors the benchmark: on the larger datasets the image models are more accurate and thus have more to lose.
+Text-region occlusion, which removes up to all OCR regions from the image, costs only 0.3--2.0\% for fusion, and
+JPEG compression and cropping cost the fusion heads at most 1.6\%.
+
+\paragraph{Aggregate F1 hides instability.} Visual perturbations flip many predictions even when macro-F1 barely
+moves. On CMBan, blur changes 23\% of fusion predictions at a 2.6\% F1 cost, because correct predictions that break
+are offset by wrong predictions that become correct. Under severity-3 blur, 28\% of the memes that the fusion model
+classifies correctly on Motivational become wrong. We therefore recommend reporting flip rates alongside Robustness
+Drop.
+
+\paragraph{Language groups.} Table~\ref{tab:cross_lang} breaks flip rates down by the script of the meme text.
+\begin{itemize}
+  \item Bangla-script memes flip most often under Romanisation (23--43\% for transliteration), because the
+  perturbation rewrites all of their text.
+  \item Code-mixed memes flip less (18--28\%), since part of their text is already in Latin script.
+  \item Latin-script memes are, as a sanity check, almost unaffected by transliteration ($\leq$2.5\%). They still
+  flip in 9--10\% of cases under spelling noise, which also affects English words.
+\end{itemize}
+Visual flip rates are similar across groups.
+
+\input{tables/cross/flip_by_language.tex}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/cmban/severity_curves_coarse.pdf}
+  \caption{CMBan: macro-F1 against perturbation severity for the text-only, image-only and Concat-MLP fusion heads
+  (XLM-R + CLIP-B/32, coarse labels, mean over tasks).}
+  \label{fig:sev_cmban}
+\end{figure*}
+
+% =====================================================================================
+\subsection{Mitigation: Romanisation Augmentation}
+\label{sec:results:aug}
+
+\input{tables/cross/augmentation.tex}
+
+Table~\ref{tab:cross_aug} reports the augmentation experiment of Section~\ref{sec:method:aug}.
+
+\paragraph{Transliteration augmentation removes most of the Romanisation drop.} Adding one transliterated copy of
+each training meme reduces the relative drop of the fusion heads under transliteration from 15\% to 2\% on CMBan,
+from 8\% to 2\% on BanglaAbuseMeme and from 7\% to 2\% on MemoSen. For the text-only heads, the reduction is from
+13--18\% to 3--6\%.
+
+\paragraph{It generalises to an unseen Romanisation style.} Romanised spelling noise is not used for augmentation in
+this setting. Even so, the fusion drop under it falls from 21\% to 5\% (CMBan), 12\% to 3\% (BanglaAbuseMeme) and
+8\% to 4\% (MemoSen). The heads thus learn to handle Romanised Bangla in general, not just the exact output of our
+transliterator. Adding the noise style to training as well (\emph{+translit.\ + noise}) closes the remaining gap,
+but only marginally improves on transliteration alone.
+
+\paragraph{Clean accuracy is preserved.} The clean macro-F1 of the fusion heads changes by $-0.7$ (CMBan),
+$-0.1$ (BanglaAbuseMeme) and $+0.4$ (MemoSen) points. The other linguistic perturbations are unaffected, apart
+from changes of at most 1.3 points. Romanisation augmentation is therefore an almost free remedy for the main
+weakness identified in Section~\ref{sec:results:rob}.
+
+% =====================================================================================
+\subsection{Explainability}
+\label{sec:results:xai}
+
+\input{tables/cross/explain.tex}
+
+\paragraph{Modality reliance.} On clean memes, the text embedding receives 55--59\% of the IG attribution of
+Concat-MLP (Table~\ref{tab:cross_xai}, Figure~\ref{fig:share_cmban}). The perturbations shift this share in
+opposite directions, and the pattern is the same on all three datasets.
+\begin{itemize}
+  \item \emph{Romanisation increases the text share} to 0.67--0.73. The perturbed text embedding lies far from the
+  training mean that serves as the IG baseline, so it dominates the attribution. Instead of discounting an
+  unfamiliar input, the head relies on it \emph{more}. This is the mechanism behind the large Romanisation drops.
+  \item \emph{Visual degradation decreases the text share} to 0.43--0.51. Blur, down-sampling and text occlusion
+  lower it by almost exactly the same amount. All three remove legible text from the image, which suggests that
+  much of what the image branch adds to the decision is \emph{read} text that agrees with the text branch.
+\end{itemize}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/cmban/modality_share_shift.pdf}
+  \caption{CMBan: shift of the text share of IG attribution (Concat-MLP) from clean inputs (dashed line) to
+  severity-3 perturbations. Blue: linguistic, orange: visual. BAM and MemoSen show the same pattern
+  (Table~\ref{tab:cross_xai}).}
+  \label{fig:share_cmban}
+\end{figure}
+
+\paragraph{Visual attention.} The Grad-CAM text-attention ratio of CLIP-B/32 differs between datasets.
+\begin{itemize}
+  \item On CMBan it is 1.13: CLIP over-attends to the rendered caption, consistent with its known ability to read
+  text.
+  \item On BAM (0.76) and MemoSen (0.88), the captions receive \emph{less} attention than their area would warrant.
+\end{itemize}
+CMBan memes are cartoon panels with large speech bubbles, while many BAM and MemoSen memes are photographs with a
+short caption band, where faces and scenes compete for attention. The claim that CLIP mainly attends to text
+therefore does not generalise beyond cartoon memes.
+
+The stability of the maps is consistent across datasets:
+\begin{itemize}
+  \item The maps are stable under JPEG compression ($r=0.87$--$0.92$).
+  \item They are unstable under blur ($r=0.30$--$0.39$) and down-sampling ($r\approx0.5$--$0.6$), even when the
+  prediction is unchanged.
+\end{itemize}
+Figure~\ref{fig:gradcam_cmban} shows CMBan examples. After text occlusion, the attention moves to the remaining text
+and to the cartoon characters. The letterbox padding also attracts attention, which suggests that it should be
+masked in future work.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/cmban/gradcam_examples.png}
+  \caption{CMBan: Grad-CAM on CLIP ViT-B/32 (sentiment head) for four memes under the spatially aligned visual
+  perturbations at severity 2.}
+  \label{fig:gradcam_cmban}
+\end{figure*}
+
+% =====================================================================================
+\subsection{Error Analysis}
+\label{sec:results:errors}
+
+\input{tables/cross/errors_clean.tex}
+\input{tables/cross/fragility.tex}
+
+\paragraph{Clean errors.} Table~\ref{tab:cross_err} attributes the clean errors of the best learned XLM-R +
+CLIP-B/32 fusion head. Late fusion is excluded, because it averages the two unimodal models and cannot, for binary
+tasks, fail when both are right.
+\begin{itemize}
+  \item The largest error category on every dataset is \emph{contextual/cultural}: 18\% of CMBan memes and 10--11\%
+  of BAM and MemoSen memes. Here all three models fail although readable text is available.
+  \item The category peaks on Sentiment (27\% on CMBan, 18\% on BAM) and on CMBan Sarcasm and Humour (20\%).
+  \item The memes in this category typically depend on knowledge outside the meme, such as a film, a public figure
+  or a template whose meaning has drifted.
+\end{itemize}
+Linguistic and visual errors are about equally common (6--9\% each), and OCR-limited errors account for 6--7\%.
+\emph{Cross-modal} errors, where both unimodal models are right but fusion is wrong, are rare (1--4\%). The learned
+fusion heads seldom destroy information that either modality has, but they also rarely recover memes that both
+modalities miss.
+
+\paragraph{Fragility.} Table~\ref{tab:cross_frag} classifies each meme by its behaviour under perturbations of
+severity $\geq2$.
+\begin{itemize}
+  \item Only 11\% (CMBan) to 33\% (BAM) of memes are \emph{stable}: correct on clean data and under every
+  perturbation.
+  \item Among the memes that are correct on clean data, cross-modal fragility (broken by both a linguistic and a
+  visual perturbation) is the most common failure type on all three datasets (13.6--20.5\% of all memes).
+  \item On CMBan, linguistic fragility dominates the Offensive task (44\%). Offensive memes are often recognised from
+  a few Bangla swear words, which Romanisation disguises.
+\end{itemize}

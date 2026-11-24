@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Error taxonomy of the best learned XLM-R + CLIP-B/32 fusion head (\% of memes, mean over tasks). Clean errors: contextual/cultural, linguistic, visual, OCR-limited, cross-modal. Under perturbation (severity $\geq2$): stable memes and memes broken only by linguistic, only by visual, or by both (X-mod.) perturbation types.}
+\label{tab:conf_err}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lccccccccc}
+\toprule
+ & \multicolumn{5}{c}{Clean errors} & \multicolumn{4}{c}{Under perturbation} \\
+\cmidrule(lr){2-6} \cmidrule(lr){7-10}
+Dataset & Ctx. & Ling. & Vis. & OCR & X-mod. & Stable & Ling. & Vis. & X-mod. \\
+\midrule
+CMBan & 17.6 & 8.7 & 8.9 & 6.0 & 3.6 & 11.1 & 18.5 & 6.6 & 20.5 \\
+BAM & 10.8 & 7.3 & 6.3 & 6.8 & 0.9 & 32.7 & 11.1 & 10.5 & 13.6 \\
+MemoSen & 10.4 & 5.7 & 5.8 & 6.3 & 3.2 & 22.2 & 14.7 & 12.7 & 19.3 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{CMBan: Grad-CAM analysis: CAM mass on OCR text regions vs. their area share (ratio $>1$: over-attention to rendered text) and Pearson $r$ between clean and perturbed CAMs.}
+\label{tab:gradcam_cmban}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lcccccccc}
+\toprule
+Task & CAM on text & Text area & Ratio & $r$ blur & $r$ jpeg & $r$ resize & $r$ text occ. & $r$ region occ. \\
+\midrule
+Humour & 0.27 & 0.24 & 1.11 & 0.29 & 0.92 & 0.52 & 0.62 & 0.65 \\
+Motivational & 0.29 & 0.24 & 1.23 & 0.30 & 0.91 & 0.47 & 0.59 & 0.65 \\
+Offensive & 0.24 & 0.24 & 0.98 & 0.31 & 0.93 & 0.52 & 0.65 & 0.67 \\
+Sarcasm & 0.26 & 0.24 & 1.10 & 0.28 & 0.92 & 0.49 & 0.60 & 0.64 \\
+Sentiment & 0.29 & 0.24 & 1.25 & 0.32 & 0.94 & 0.52 & 0.62 & 0.70 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

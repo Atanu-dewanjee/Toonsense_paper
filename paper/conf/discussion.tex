@@ -1,0 +1,45 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\textbf{Why Romanisation breaks fusion models.} Three observations form a consistent account. XLM-R represents
+Romanised Bangla far from Bangla script, whereas native-script noise of similar strength is harmless. The fusion head
+has never seen such inputs and treats the out-of-distribution text vector as strong evidence, as the rising IG text
+share shows. With little data (CMBan) the head has not learned to fall back on the image; with more data the image
+branch absorbs about half of the damage. The augmentation result confirms this: once the head sees transliterated
+copies, most of the drop disappears, so the weakness lies in the head's training distribution rather than in the
+encoder's ability to represent Banglish.
+
+\textbf{Cartoon memes are different.} CMBan memes have longer text (24.8 vs.\ about 15 words), draw more CLIP
+attention to their captions and have more contextual/cultural errors (18\% vs.\ 10--11\%). Two CMBan observations,
+fusion amplifying text fragility and CLIP over-attending to captions, did not replicate on the photographic datasets.
+Conclusions drawn on photographic Bangla memes therefore do not automatically transfer to cartoon memes, and vice
+versa.
+
+\textbf{Recommendations.} (i) Augment training data with Romanised text; it is cheap and needs no labels. (ii) Report
+flip rates next to F1. (iii) Keep character features: $n$-grams beat frozen sentence encoders on meme text.
+(iv) Prefer a stronger image encoder when affordable; CLIP ViT-L/14 gives the largest single gain and the image branch
+is what cushions text corruption.
+
+\textbf{Limitations.} Only 133 CMBan memes have public labels, so CMBan results are indicative; we mitigate this with
+repeated cross-validation, bootstrap intervals, flip rates and replication on two datasets of about 4k memes. Text for
+CMBan and BAM comes from OCR, which may understate text encoders; MemoSen's human captions partly control for this.
+Augmentation and the transliteration test share one generator, so results under the unseen spelling-noise style are
+the conservative estimate, and gains on naturally written Banglish remain to be confirmed. Encoders are frozen,
+robustness was analysed for the primary pair only, and contextual/cultural errors are automatically detected
+candidates that need native-speaker verification.
+
+\textbf{Ethics.} All datasets are public research releases (CMBan: MIT, BAM: CC-BY-4.0, MemoSen: research use). Some
+memes are offensive; we use them only to measure model behaviour and do not redistribute them. We report aggregate
+vulnerabilities that are already apparent from everyday writing, not methods for crafting adversarial memes.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+ToonSense evaluates frozen-encoder multimodal classifiers for Bangla--English memes on CMBan and two larger datasets.
+The image modality carries most of the signal, and fusion adds a small but significant gain once a few thousand
+memes are available. Romanised Bangla is the main threat, costing fusion models 8--21\% of relative macro-F1 while
+native-script noise and code-mixing are nearly harmless, and the perturbed text attracts \emph{more} attribution.
+Training with transliterated copies reduces the drop to 2--5\% at a clean cost below one point. Visual perturbations
+flip up to 27\% of predictions with little F1 change, so robustness studies should report flip rates. Future work
+should apply the protocol to fine-tuned and generative vision--language models, collect naturally Romanised memes,
+and repeat the CMBan analyses once its full label set is released.

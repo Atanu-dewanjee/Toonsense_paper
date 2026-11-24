@@ -1,0 +1,36 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Frozen text encoders on clean data: accuracy and macro-F1 (\%), averaged over each dataset's tasks (CMBan: 5 coarse-label tasks; BanglaAbuseMeme: 4; MemoSen: 1), repeated stratified 5-fold CV $\times$ 3 seeds. Bold: best text encoder per column. Because the labels are imbalanced, the majority-class predictor reaches high accuracy but low macro-F1, so models are ranked by macro-F1.}
+\label{tab:text_encoders}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llcccccc}
+\toprule
+Encoder & Head & \multicolumn{2}{c}{CMBan} & \multicolumn{2}{c}{BanglaAbuseMeme} & \multicolumn{2}{c}{MemoSen} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+ & & Acc. & Macro-F1 & Acc. & Macro-F1 & Acc. & Macro-F1 \\
+\midrule
+XLM-R base & LR & 50.0 & 45.9 & 61.1 & 58.8 & 57.3 & 46.0 \\
+ & MLP & 46.7 & 45.1 & 61.5 & 59.6 & 53.9 & 45.9 \\
+\addlinespace[2pt]
+XLM-R large & LR & 50.0 & 45.3 & 62.3 & 59.9 & \textbf{60.5} & \textbf{48.4} \\
+ & MLP & 47.7 & 46.0 & \textbf{62.5} & \textbf{60.5} & 53.6 & 46.2 \\
+\addlinespace[2pt]
+mBERT & LR & 48.9 & 44.6 & 59.4 & 57.1 & 51.7 & 41.2 \\
+ & MLP & 46.0 & 44.8 & 59.0 & 57.2 & 45.6 & 39.1 \\
+\addlinespace[2pt]
+BanglaBERT & LR & 50.7 & 46.7 & 60.8 & 58.5 & 53.4 & 42.8 \\
+ & MLP & 47.4 & 46.0 & 60.1 & 58.2 & 46.9 & 40.6 \\
+\addlinespace[2pt]
+LaBSE & LR & 48.8 & 44.3 & 60.7 & 58.5 & 54.2 & 43.3 \\
+ & MLP & 46.1 & 44.7 & 60.2 & 58.7 & 48.8 & 41.7 \\
+\addlinespace[2pt]
+mE5 base & LR & \textbf{51.9} & \textbf{46.9} & 61.7 & 59.4 & 56.4 & 44.9 \\
+ & MLP & 47.2 & 45.4 & 61.9 & 60.2 & 50.5 & 43.0 \\
+\midrule
+Majority class & -- & 59.4 & 35.0 & 60.7 & 34.8 & 62.5 & 25.6 \\
+Char TF-IDF & LR & 53.7 & 46.2 & 68.2 & 65.2 & 67.6 & 52.6 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

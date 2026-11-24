@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{MemoSen: effect of train-time Romanisation augmentation. Macro-F1 (\%) on clean and perturbed test folds, averaged over heads, tasks and severities; relative Robustness Drop (\%) in parentheses. Romanised spelling noise is unseen in the \emph{+translit.} setting.}}
+\label{tab:aug_memosen}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llccccccc}
+\toprule
+Heads & Augmentation & Clean & Translit. & Roman. noise & Bangla noise & Code-mix & Emoji ins. & Emoji rem. \\
+\midrule
+Text & none & 46.0 & 38.0 (17) & 36.0 (22) & 45.8 (0) & 44.6 (3) & 40.6 (12) & 44.4 (3) \\
+Text & +translit. & 45.5 & 43.2 (5) & 40.6 (11) & 45.2 (1) & 44.6 (2) & 39.7 (13) & 43.7 (4) \\
+Text & +translit.\,+\,noise & 45.2 & 43.7 (3) & 42.5 (6) & 44.9 (1) & 44.3 (2) & 38.9 (14) & 43.2 (4) \\
+Fusion & none & 53.2 & 49.7 (7) & 49.1 (8) & 53.5 (-0) & 52.7 (1) & 50.7 (5) & 52.8 (1) \\
+Fusion & +translit. & 53.6 & 52.4 (2) & 51.2 (4) & 53.7 (-0) & 53.2 (1) & 51.3 (4) & 53.1 (1) \\
+Fusion & +translit.\,+\,noise & 53.5 & 52.7 (2) & 51.9 (3) & 53.5 (0) & 53.3 (0) & 51.2 (4) & 53.1 (1) \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

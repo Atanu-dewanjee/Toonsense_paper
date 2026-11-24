@@ -1,0 +1,21 @@
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Meme understanding.} The Hateful Memes challenge~\cite{kiela2020hateful} showed that unimodal models fail when
+either modality alone is benign, and Memotion~\cite{sharma2020memotion} introduced the humour, sarcasm, offensiveness,
+motivation and sentiment taxonomy that CMBan adopts. Most systems fuse a pretrained text encoder with a vision
+encoder, often CLIP~\cite{radford2021clip}. Bangla resources include MemoSen~\cite{hossain2022memosen} (sentiment),
+MUTE~\cite{hossain2022mute} and BHM~\cite{hossain2024bhm} (hate), BanglaAbuseMeme~\cite{das2023banglaabusememe}
+(abuse, vulgarity, sarcasm, sentiment), MIMOSA~\cite{ahsan2024mimosa} (aggression) and CMBan~\cite{cmban2025}, which
+annotates 2{,}641 cartoon memes along the Memotion dimensions. All evaluate on clean data only.
+
+\textbf{Robustness.} ImageNet-C~\cite{hendrycks2019benchmarking} established severity-graded corruptions for vision,
+CheckList~\cite{ribeiro2020checklist} behavioural testing for NLP, and GLUECoS~\cite{khanuja2020gluecos} showed that
+multilingual encoders degrade on code-switched input. CLIP reads rendered text and is therefore susceptible to
+typographic manipulation~\cite{goh2021multimodal}, which matters for memes, where the text \emph{is} part of the
+image. For Bangla, the dominant real-world variation is Romanised writing, which has not been studied for memes.
+
+\textbf{Explainability.} Integrated Gradients~\cite{sundararajan2017ig} and
+Grad-CAM~\cite{selvaraju2017gradcam,chattopadhay2018gradcampp} are widely used to justify predictions. We use them
+\emph{comparatively}, measuring how modality reliance and visual attention shift between clean and perturbed versions
+of the same meme.

@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{CMBan: effect of train-time Romanisation augmentation. Macro-F1 (\%) on clean and perturbed test folds, averaged over heads, tasks and severities; relative Robustness Drop (\%) in parentheses. Romanised spelling noise is unseen in the \emph{+translit.} setting.}}
+\label{tab:aug_cmban}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llccccccc}
+\toprule
+Heads & Augmentation & Clean & Translit. & Roman. noise & Bangla noise & Code-mix & Emoji ins. & Emoji rem. \\
+\midrule
+Text & none & 45.5 & 39.7 (13) & 37.5 (18) & 45.1 (1) & 46.1 (-1) & 44.4 (2) & 45.0 (1) \\
+Text & +translit. & 45.6 & 44.1 (3) & 43.2 (5) & 45.0 (1) & 45.8 (-1) & 43.1 (6) & 44.8 (2) \\
+Text & +translit.\,+\,noise & 45.2 & 44.9 (1) & 45.7 (-1) & 44.4 (2) & 45.0 (0) & 43.1 (5) & 44.6 (1) \\
+Fusion & none & 47.2 & 40.6 (15) & 37.8 (21) & 47.0 (0) & 46.9 (1) & 46.2 (2) & 47.0 (0) \\
+Fusion & +translit. & 46.5 & 45.3 (2) & 44.0 (5) & 46.5 (-0) & 46.1 (1) & 45.6 (2) & 46.5 (-0) \\
+Fusion & +translit.\,+\,noise & 46.1 & 46.2 (-1) & 46.0 (-0) & 46.5 (-1) & 46.5 (-1) & 45.7 (1) & 46.1 (-0) \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

@@ -1,0 +1,135 @@
+% ToonSense -- supplementary material for the conference version (main.tex).
+\documentclass[conference]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{amsmath,amssymb}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\newcommand{\inputifexists}[1]{\IfFileExists{#1}{\input{#1}}{}}
+
+\title{ToonSense: Supplementary Material}
+\author{\IEEEauthorblockN{Adrita Biswas, Atanu Dewanjee, Hrittika Dutta}
+\IEEEauthorblockA{School of Science, Engineering and Technology\\
+East Delta University, Chattogram, Bangladesh}}
+
+\begin{document}
+\maketitle
+
+This document accompanies the conference paper. It contains the encoder details, the full benchmark of every text
+encoder with both heads, the significance tests, additional robustness and explainability figures, and the
+per-dataset detail tables. All numbers are macro-F1 (\%) from repeated stratified 5-fold cross-validation with three
+seeds unless stated otherwise. CMBan is reported at its coarse label level (the fine level is included for
+completeness); BanglaAbuseMeme (BAM) and MemoSen at their released label level. Each dataset is processed separately.
+
+\section{Datasets and Encoders}
+
+\inputifexists{tables/cmban/dataset_stats.tex}
+\inputifexists{tables/banglaabusememe/dataset_stats.tex}
+\inputifexists{tables/memosen/dataset_stats.tex}
+
+\begin{table}[t]
+\centering
+\small
+\caption{Frozen encoders. Parameter counts are for the encoder actually used (for CLIP, the vision tower only).
+$^\star$ marks the primary configuration.}
+\label{tab:encoders}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{llrrl}
+\toprule
+Modality & Encoder & Params & Dim. & Pooling \\
+\midrule
+\multirow{6}{*}{Text}
+ & XLM-R-base$^\star$ & 278M & 768  & mean \\
+ & XLM-R-large        & 560M & 1024 & mean \\
+ & mBERT (cased)      & 178M & 768  & mean \\
+ & BanglaBERT         & 110M & 768  & mean \\
+ & LaBSE              & 471M & 768  & pooler, $\ell_2$ \\
+ & mE5-base           & 278M & 768  & mean, $\ell_2$ \\
+\midrule
+\multirow{4}{*}{Image}
+ & CLIP ViT-B/32$^\star$ & 87M  & 512  & projection \\
+ & CLIP ViT-B/16         & 86M  & 512  & projection \\
+ & CLIP ViT-L/14         & 303M & 768  & projection \\
+ & DINOv2-base           & 87M  & 1536 & CLS; mean patch \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\section{Clean-Data Benchmark}
+
+Table~\ref{tab:text_encoders} lists every text encoder with both heads, and Table~\ref{tab:cross_sig} the
+fusion-versus-unimodal significance tests. The per-dataset benchmark and fusion-grid tables follow.
+
+\input{tables/cross/text_encoders.tex}
+\input{tables/cross/significance.tex}
+\inputifexists{tables/cmban/benchmark_coarse.tex}
+\inputifexists{tables/cmban/primary_full_coarse.tex}
+\inputifexists{tables/cmban/fusion_grid_coarse.tex}
+\inputifexists{tables/banglaabusememe/benchmark_fine.tex}
+\inputifexists{tables/banglaabusememe/fusion_grid_fine.tex}
+\inputifexists{tables/memosen/benchmark_fine.tex}
+\inputifexists{tables/memosen/fusion_grid_fine.tex}
+\inputifexists{tables/cmban/benchmark_fine.tex}
+
+\section{Robustness}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/cross_robustness.pdf}
+  \caption{Relative Robustness Drop of the XLM-R + CLIP-B/32 fusion heads (mean over five heads, all tasks and three
+  severities) for each perturbation family and dataset.}
+  \label{fig:cross_rob}
+\end{figure*}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/cmban/severity_curves_coarse.pdf}
+  \caption{CMBan: macro-F1 against perturbation severity for the text-only, image-only and Concat-MLP fusion heads
+  (XLM-R + CLIP-B/32, coarse labels, mean over tasks).}
+  \label{fig:sev_cmban}
+\end{figure*}
+
+\input{tables/cross/flip_by_language.tex}
+\inputifexists{tables/cmban/robustness_coarse.tex}
+\inputifexists{tables/cmban/robustness_by_task_coarse.tex}
+\inputifexists{tables/banglaabusememe/robustness_fine.tex}
+\inputifexists{tables/memosen/robustness_fine.tex}
+
+\section{Explainability}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/cmban/modality_share_shift.pdf}
+  \caption{CMBan: shift of the text share of IG attribution (Concat-MLP) from clean inputs (dashed line) to
+  severity-3 perturbations. Blue: linguistic, orange: visual.}
+  \label{fig:share_cmban}
+\end{figure}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/cmban/gradcam_examples.png}
+  \caption{CMBan: Grad-CAM on CLIP ViT-B/32 (sentiment head) for four memes under the spatially aligned visual
+  perturbations at severity 2. After text occlusion, attention moves to the remaining text and the characters.}
+  \label{fig:gradcam_cmban}
+\end{figure*}
+
+\input{tables/cross/explain.tex}
+\inputifexists{tables/cmban/gradcam.tex}
+\inputifexists{tables/banglaabusememe/gradcam.tex}
+\inputifexists{tables/memosen/gradcam.tex}
+
+\section{Error Analysis}
+
+\inputifexists{tables/cmban/clean_error_table.tex}
+\inputifexists{tables/cmban/fragility_table.tex}
+\inputifexists{tables/banglaabusememe/clean_error_table.tex}
+\inputifexists{tables/memosen/clean_error_table.tex}
+
+\end{document}

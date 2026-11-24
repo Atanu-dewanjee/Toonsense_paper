@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\small
+\caption{MemoSen: Grad-CAM analysis: CAM mass on OCR text regions vs. their area share (ratio $>1$: over-attention to rendered text) and Pearson $r$ between clean and perturbed CAMs.}
+\label{tab:gradcam_memosen}
+\begin{adjustbox}{max width=\columnwidth}
+\begin{tabular}{lcccccccc}
+\toprule
+Task & CAM on text & Text area & Ratio & $r$ blur & $r$ jpeg & $r$ resize & $r$ text occ. & $r$ region occ. \\
+\midrule
+Sentiment & 0.19 & 0.22 & 0.88 & 0.36 & 0.92 & 0.51 & 0.63 & 0.65 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

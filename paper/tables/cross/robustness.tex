@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Relative Robustness Drop (\%) across datasets, averaged over tasks and severities, for the matching unimodal heads (uni.) and the five XLM-R + CLIP-B/32 fusion heads (fus.; flip rate \% in parentheses). The top six rows are linguistic, the bottom six visual perturbations.}
+\label{tab:cross_rob}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccccc}
+\toprule
+Perturbation & CMBan uni. & CMBan fus. & BAM uni. & BAM fus. & MemoSen uni. & MemoSen fus. \\
+\midrule
+Transliteration & 12.9 & 14.5 (37) & 18.4 & 8.2 (22) & 17.3 & 6.7 (21) \\
+Roman. spelling noise & 17.9 & 20.7 (45) & 26.5 & 11.5 (28) & 21.8 & 7.7 (26) \\
+Bangla spelling noise & 0.6 & 0.3 (7) & 1.7 & 0.8 (6) & 0.3 & -0.5 (8) \\
+Code-mixing & -1.5 & 0.7 (8) & 0.7 & 0.3 (4) & 3.0 & 1.1 (8) \\
+Emoji insertion & 2.3 & 2.0 (12) & 4.8 & 2.5 (11) & 11.7 & 4.8 (14) \\
+Emoji/symbol removal & 1.0 & 0.4 (3) & 0.2 & 0.1 (1) & 3.5 & 0.9 (3) \\
+Blur & 2.8 & 2.6 (23) & 16.6 & 6.3 (20) & 14.9 & 7.4 (27) \\
+Crop & -1.9 & -0.7 (12) & 0.9 & 0.6 (10) & 3.3 & 1.6 (13) \\
+Down-sampling & 2.2 & 1.9 (18) & 8.3 & 3.3 (15) & 13.4 & 7.1 (25) \\
+JPEG & -0.0 & -0.5 (6) & 3.2 & 1.5 (8) & 0.8 & -0.1 (7) \\
+Text occlusion & -0.3 & 0.3 (14) & 4.4 & 2.0 (11) & 4.0 & 1.0 (17) \\
+Region occlusion & 1.4 & 0.5 (10) & 3.8 & 2.1 (11) & 4.5 & 1.6 (12) \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

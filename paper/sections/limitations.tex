@@ -1,0 +1,53 @@
+\section*{Limitations}
+\label{sec:limitations}
+
+\begin{itemize}
+  \item \textbf{Size of the released CMBan labels.} Only 133 of the 2{,}641 CMBan memes have public labels. On CMBan,
+  most differences between models fall within the bootstrap confidence intervals, so CMBan results should be read
+  as indicative. We mitigate this with repeated cross-validation, bootstrap intervals and label-free flip rates,
+  and by replicating every analysis on BanglaAbuseMeme and MemoSen ($\sim$4k memes each). Two CMBan observations,
+  fusion amplifying text fragility and CLIP over-attending to captions, did not replicate on the larger datasets.
+
+  \item \textbf{OCR as the text source.} For CMBan and BanglaAbuseMeme the text modality is produced by EasyOCR
+  (mean confidence $0.58$ on CMBan). Part of the text-encoder weakness may therefore reflect OCR errors rather than
+  the encoder. MemoSen, which ships human-written captions, partly controls for this.
+
+  \item \textbf{Perturbation coverage.}
+  \begin{itemize}
+    \item Our code-mixing perturbation is lexicon-based ($\sim$200 words) and changes at most about 19\% of tokens.
+    \item OCR output never contains emojis, so emoji \emph{removal} reduces to symbol removal.
+    \item The transliterator follows one colloquial convention, whereas real Banglish spelling varies more widely;
+    the spelling-noise family approximates this variation.
+  \end{itemize}
+
+  \item \textbf{Augmentation and test perturbations share a generator.} The transliteration used for augmentation is
+  produced by the same transliterator as the transliteration test perturbation, which favours the augmented models.
+  The results under Romanised spelling noise, which is not used for augmentation in the main setting, are the more
+  conservative estimate. Gains on naturally written Banglish remain to be confirmed.
+
+  \item \textbf{Decoupled perturbations.} In the main setting each perturbation changes one modality. In real
+  circulation, a degraded image also degrades the OCR text. The coupled setting is implemented but was not run at
+  full scale.
+
+  \item \textbf{Frozen encoders and selection.} All encoders are frozen, as the proposal specifies. Fine-tuned
+  models may behave differently. Robustness and explainability analyses were run for the primary encoder pair only.
+  The ``best'' configurations in the fusion-vs-unimodal tests are selected on the same data, which slightly favours
+  the selected models.
+
+  \item \textbf{Cultural interpretation.} The \emph{contextual/cultural} error category is detected automatically
+  and contains candidates only. Confirming cultural dependence requires native-speaker annotation, which is left
+  for future work.
+\end{itemize}
+
+\section*{Ethics Statement}
+All datasets are publicly released for research:
+\begin{itemize}
+  \item CMBan under the MIT licence.
+  \item BanglaAbuseMeme under CC-BY-4.0.
+  \item MemoSen by its authors for research use.
+\end{itemize}
+Some memes contain offensive, vulgar or abusive content. We use them only to measure model behaviour and do not
+redistribute the datasets; the only images reproduced are four non-offensive CMBan examples in the Grad-CAM figure,
+shown for illustration. Robustness findings could in principle inform evasion of moderation systems. We report
+aggregate vulnerabilities, which are already apparent from everyday social-media writing, rather than methods for
+crafting adversarial memes.
