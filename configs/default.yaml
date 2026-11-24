@@ -1,0 +1,113 @@
+# ToonSense default experiment configuration.
+# All paths are relative to the project root unless absolute.
+
+seed: 42
+
+# Active dataset (override with --dataset or the TOONSENSE_DATASET environment variable).
+dataset: cmban
+
+# "{dataset}" in a path is replaced by the active dataset name.
+paths:
+  ocr_dir: data/ocr/{dataset}                 # OCR text + boxes cache
+  manual_transcripts: data/transcripts_manual_{dataset}.csv   # optional gold text (id,text); overrides OCR
+  features: features/{dataset}                # cached encoder embeddings
+  results: results/{dataset}
+  hf_cache: .cache/hf                         # keep model weights off the (full) C: drive
+  easyocr_cache: .cache/easyocr
+
+# Dataset registry. Each task lists its ordered fine-grained classes; `coarse` maps fine -> collapsed class
+# (unlisted classes map to themselves). `text_column` (optional) provides human-written meme text.
+datasets:
+  cmban:
+    labels: data/raw/sample.xlsx
+    image_dirs: [data/raw/images/images, data/raw/sample]
+    id_column: Image ID
+    language_column: Languages
+    granularities: [fine, coarse]
+    primary_granularity: coarse
+    tasks:
+      humour:       {column: Humour,       classes: [Not Funny, Funny, Very Funny], coarse: {Very Funny: Funny}}
+      sarcasm:      {column: Sarcastic,    classes: [Not Sarcastic, Little Sarcastic, Very Sarcastic],
+                     coarse: {Little Sarcastic: Sarcastic, Very Sarcastic: Sarcastic}}
+      offensive:    {column: Offensive,    classes: [Not Offensive, Slight Offensive, Hateful Offensive],
+                     coarse: {Slight Offensive: Offensive, Hateful Offensive: Offensive}}
+      motivational: {column: Motivational, classes: [Not Motivational, Motivational]}
+      sentiment:    {column: Overall,      classes: [Very Negative, Negative, Neutral, Positive, Very Positive],
+                     coarse: {Very Negative: Negative, Very Positive: Positive}}
+  banglaabusememe:          # Das & Mukherjee, EMNLP 2023 — CC-BY-4.0, zenodo.org/records/10044949
+    labels: data/external/banglaabusememe/BanglaAbuseMeme/BanglaAbuseMeme_annotation.csv
+    image_dirs: [data/external/banglaabusememe/BanglaAbuseMeme/Images]
+    id_column: Ids
+    granularities: [fine]
+    primary_granularity: fine
+    tasks:
+      sentiment: {column: sentiment, classes: [Negative, Neutral, Positive]}
+      sarcasm:   {column: sarcasm,   classes: ["No", "Yes"]}
+      abuse:     {column: abuse,     classes: [Non-abusive, Abusive]}
+      vulgar:    {column: vulgar,    classes: [Not Vulgar, Vulgar]}
+  memosen:                  # Hossain et al., LREC 2022 — human-written captions included
+    labels: data/external/memosen/Dataset/multi-sent.xlsx
+    image_dirs: [data/external/memosen/Dataset/Memes]
+    id_column: image_name
+    text_column: Captions
+    granularities: [fine]
+    primary_granularity: fine
+    tasks:
+      sentiment: {column: Label_Sentiment, classes: [negative, neutral, positive]}
+
+ocr:
+  languages: [bn, en]
+  min_confidence: 0.10      # drop OCR fragments below this confidence
+  max_side: 1280            # downscale very large images before OCR (speed)
+
+encoders:
+  text:
+    xlmr-base:   {hf_id: FacebookAI/xlm-roberta-base,            pooling: mean, max_len: 256}
+    xlmr-large:  {hf_id: FacebookAI/xlm-roberta-large,           pooling: mean, max_len: 256}
+    mbert:       {hf_id: google-bert/bert-base-multilingual-cased, pooling: mean, max_len: 256}
+    banglabert:  {hf_id: csebuetnlp/banglabert,                  pooling: mean, max_len: 256}
+    labse:       {hf_id: sentence-transformers/LaBSE,            pooling: pooler, max_len: 256, normalize: true}
+    me5-base:    {hf_id: intfloat/multilingual-e5-base,          pooling: mean, max_len: 256, prefix: "query: ", normalize: true}
+  image:
+    clip-b32:    {hf_id: openai/clip-vit-base-patch32,  kind: clip}
+    clip-b16:    {hf_id: openai/clip-vit-base-patch16,  kind: clip}
+    clip-l14:    {hf_id: openai/clip-vit-large-patch14, kind: clip}
+    dinov2-base: {hf_id: facebook/dinov2-base,          kind: dino}
+
+# Primary (proposal) configuration: XLM-R + CLIP with light fusion.
+primary:
+  text: xlmr-base
+  image: clip-b32
+
+benchmark:
+  folds: 5
+  seeds: [0, 1, 2]
+  inner_val_fraction: 0.15     # held out from each training fold for early stopping
+  bootstrap: 1000
+  unimodal_heads: [logreg, mlp]
+  fusion_heads: [concat_lr, concat_mlp, late, gmu, bilinear]
+  # Fusion grid over every text x image encoder pair uses these heads only (cost control).
+  grid_heads: [concat_mlp, gmu]
+
+head:
+  hidden: 256
+  dropout: 0.3
+  lr: 1.0e-3
+  weight_decay: 1.0e-2
+  max_epochs: 300
+  patience: 30
+  class_weighting: true
+
+robustness:
+  severities: [1, 2, 3]
+  text: [translit, roman_noise, bangla_noise, codemix, emoji_add, emoji_remove]
+  image: [blur, crop, resize, jpeg, text_occlusion, region_occlusion]
+  # Re-run OCR on perturbed images so text is degraded as in a real deployment (slow).
+  coupled_ocr: false
+
+device: auto                 # auto | cpu | cuda   (encoders + OCR; heads always run on CPU)
+
+explain:
+  n_examples: 12
+  ig_steps: 32
+  cam_max_per_task: 300      # Grad-CAM statistics on a stratified subsample for large datasets
