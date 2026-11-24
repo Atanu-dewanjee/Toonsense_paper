@@ -14,13 +14,15 @@ failures. Each dataset is processed separately with the same protocol.
 
 ## Paper
 
-| Document | PDF | Source |
-|---|---|---|
-| Conference paper (IEEE, 8-page limit) | [paper/ToonSense_IEEE.pdf](paper/ToonSense_IEEE.pdf) | [paper/main.tex](paper/main.tex) (`paper/conf/`) |
-| Supplementary material | [paper/ToonSense_supplementary.pdf](paper/ToonSense_supplementary.pdf) | [paper/supplementary.tex](paper/supplementary.tex) |
-| Extended version (full methodology, appendix tables) | [paper/ToonSense_extended.pdf](paper/ToonSense_extended.pdf) | [paper/main_extended.tex](paper/main_extended.tex) (`paper/sections/`) |
+| Document | Source |
+|---|---|
+| Conference paper (IEEE, 8-page limit) | [paper/main.tex](paper/main.tex) (sections in `paper/conf/`) |
+| Supplementary material | [paper/supplementary.tex](paper/supplementary.tex) |
+| Extended version (full methodology, appendix tables) | [paper/main_extended.tex](paper/main_extended.tex) (sections in `paper/sections/`) |
 
-All tables in the paper are generated from `results/` by the scripts below. **Results:** see
+Compile from `paper/` with `pdflatex main && bibtex main && pdflatex main && pdflatex main` (likewise for the other
+two; the supplementary needs no `bibtex`), or upload the `paper/` folder to Overleaf. All tables in the paper are
+generated from `results/` by the scripts below. **Results:** see
 [results/RESULTS.md](results/RESULTS.md) (all cross-dataset tables) and the summary [below](#results).
 
 ## Repository layout
@@ -31,7 +33,7 @@ src/        toonsense library: data, OCR, encoders, heads, CV engine, perturbati
 scripts/    pipeline steps 01–16 (see table below)
 tests/      unit tests
 results/    per-dataset scores, tables and figures, and RESULTS.md
-paper/      LaTeX sources, generated tables and figures, compiled PDFs
+paper/      LaTeX sources, generated tables and figures
 docs/       project proposal
 ```
 
@@ -69,7 +71,7 @@ CMBan images ─► OCR (EasyOCR bn+en) ─► text ──► frozen text encode
 | 12 | `scripts/12_flow_vertical.py` | `paper/figures/methodology_flow_vertical.{pdf,png}` (proposal-style flowchart) |
 | 13 | `scripts/13_encoder_table.py` | `paper/tables/cross/text_encoders.tex` (accuracy and macro-F1 of every text encoder, all datasets) |
 | 14 | `scripts/14_kaggle_paper_build.py` | `kaggle/paper-build/` Kaggle CPU kernel that compiles the three LaTeX documents |
-| 15 | `scripts/15_flatten_paper.py` | single-file `paper/ToonSense_*.tex`, Overleaf zip, PDFs copied into `paper/` |
+| 15 | `scripts/15_flatten_paper.py` | single-file `paper/ToonSense_*.tex` and an Overleaf zip (not versioned) |
 | 16 | `scripts/16_conference_tables.py` | `paper/tables/conf/*.tex` compact tables for the conference version |
 
 Every script takes `--dataset {cmban,banglaabusememe,memosen}` (default: `dataset` in `configs/default.yaml`, or

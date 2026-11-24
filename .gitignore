@@ -26,9 +26,19 @@ results/**/gradcam_examples.png
 results/**/token_ig_examples.*
 
 # ---------------------------------------------------------------------------
-# Paper build artefacts (the compiled PDFs in paper/ are kept)
+# Paper build artefacts (PDFs are built from the LaTeX sources, not versioned)
 # ---------------------------------------------------------------------------
-paper/ToonSense_*.tex
+paper/*.pdf
+paper/ToonSense_*
+paper/fall26/ToonSense_*
+paper/figures/**/*.png
+!paper/figures/cmban/gradcam_examples.png
+paper/figures/methodology_flow_vertical.*
+
+# Duplicate report outputs: PNG copies of the PDF figures, and LaTeX tables that
+# are kept in paper/tables/
+results/**/*.png
+results/**/tables/*.tex
 *.aux
 *.bbl
 *.blg
